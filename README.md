@@ -9,7 +9,13 @@ Whenever you upload a file or folder guys, just add a quick description of it he
 
 #Uses
 
-edgeDetect(filename, type, threshold, direction)
+edgeDetect(filepath, type, threshold, direction)
+
+0 - canny method, optional threshold and direction
+1 - sobel method, optional threshold and direction
+2 - prewitt method, optional threshold
+3 - roberts method, optional threshold
+4 - laplacian of the gaussian, optional threshold and sigma
  
 ##openCV_Image_Search
  - An IntelliJ Project using openCV to find a small image in a larger image given a template.
