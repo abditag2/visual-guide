@@ -11,6 +11,10 @@ public class Main {
 
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 
-        new TemplateMatching().run("TestImages/fullImage.png", "TestImages/templateImage.png", "TestImages/resultImage.png", Imgproc.TM_CCOEFF);
+        /*Runs once, generates one image*/
+        new TemplateMatching().run("TestImages/fullImage.jpg", "TestImages/templateImage.jpg", "TestImages/resultImage.jpg", Imgproc.TM_CCOEFF);
+
+        /*Runs once, generates multiple images based on different matching filters */
+        //new TemplateMatchingCases().run("TestImages/fullImage.jpg", "TestImages/templateImage.jpg", "TestImages/resultImage");
     }
 }
