@@ -8,7 +8,7 @@ int main()
     inImg.readFromFile("test.png");
 
     Splice test(inImg);
-    test.saveToDisk(string("random"));
+    test.saveToDisk("Super");
     spliceRange_t x, y;
     x.begin = 300;
     x.end = 600;
@@ -16,6 +16,9 @@ int main()
     y.end = 600;
     PNG imgout = test.getImage(x, y);
     imgout.writeToFile("test2.png");
+
+    test.getImage(string("random"), x, y);
+
     return 0;
 
 }

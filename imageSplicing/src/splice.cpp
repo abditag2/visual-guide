@@ -39,6 +39,25 @@ void Splice::saveToDisk(std::string const & dirname)
 {
     mkdir((string(dirname).append(".splice")).c_str(), 0777);
     _recursiveSaveImage(string(dirname).append(".splice"), root);
+    std::ofstream metadata;
+    metadata.open(string(dirname).append(".splice").append("/").append(".metadata"));
+
+    // Save the meta data to use when we don't have it in ram
+    metadata << width << std::endl << 
+                height << std::endl << 
+                baseX << std::endl << 
+                baseY << std::endl << 
+                imgSaveOffsetX << std::endl << 
+                imgSaveOffsetY << std::endl;
+}
+
+void Splice::saveToDisk(char const * dirname)
+{
+    if (dirname == NULL)
+    {
+        std::cout << "Please enter a valid filename" << std::endl;
+    }
+    saveToDisk(string(dirname));
 }
 
 void Splice::_recursiveSaveImage(std::string const & dirname, quadTreeNode * subroot)
@@ -82,6 +101,54 @@ Splice::quadTreeNode * Splice::_buildTreeHelper(PNG const & image, int x, int y,
     newSubroot->seChild = _buildTreeHelper(image, x + w/2, y + h/2, w/2, h/2);
 
     return newSubroot;
+}
+
+PNG Splice::getImage(char const * fname, spliceRange_t x, spliceRange_t y)
+{
+    if (fname == NULL)
+    {
+        error("Please enter a valid filename");
+    }
+    return getImage(std::string(fname), x, y);
+}
+
+PNG Splice::getImage(std::string const & fname, spliceRange_t x, spliceRange_t y)
+{
+
+    std::ifstream metadata;
+    metadata.open(string(fname).append(".splice").append("/").append(".metadata"));
+    std::string line;
+    std::vector<int> meta;
+    if (!metadata.is_open())
+    {
+        error("Error File does not exist");
+        return PNG();
+    }
+
+    while (getline(metadata, line))
+    {
+        meta.push_back(stol(line));
+    }
+
+    width = meta[0];
+    height = meta[1];
+    baseX = meta[2];
+    baseY = meta[3];
+    imgSaveOffsetX = meta[4];
+    imgSaveOffsetY = meta[5];
+
+    std::cout << "Width: " << width << " Height: " << height << std::endl;
+    std::cout << "BaseX: " << baseX << " BaseY: " << baseY << std::endl;
+
+
+    _fitInsideImages(x, y);
+
+    PNG generatedImage;
+    generatedImage.resize((int) x.end - x.begin, (int) y.end - y.begin);
+
+    _generateImage(generatedImage, root, 0, 0, x, y, width, height);
+
+    return generatedImage;
 }
 
 PNG Splice::getImage(spliceRange_t x, spliceRange_t y)

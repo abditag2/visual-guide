@@ -18,6 +18,11 @@
 #include "rgbapixel.h"
 #include "PNG.h"
 #include <sys/stat.h>
+#include <fstream>
+#include <vector>
+
+#define error(message) \
+ std::cout << message << std::endl;
 
 
 #define isLeaf(subroot) subroot->nwChild == NULL && \
@@ -61,6 +66,8 @@ public:
     Splice();
     Splice(PNG const & image);
     void saveToDisk(std::string const & dirname);
+    void saveToDisk(char const * dirname);
+    PNG getImage(char const * fname, spliceRange_t x, spliceRange_t y);
     PNG getImage(std::string const & fname, spliceRange_t x, spliceRange_t y);
     PNG getImage(spliceRange_t x, spliceRange_t y);
 
