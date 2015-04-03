@@ -62,6 +62,8 @@ public:
 
     Splice();
     Splice(PNG const & image);
+    Splice(std::string const & filename);
+    ~Splice();
     void saveToDisk(std::string const & dirname);
     void saveToDisk(char const * dirname);
     splicedImage_t getImage(char const * fname, spliceRange_t x, spliceRange_t y);
@@ -111,6 +113,7 @@ private:
     void _recursiveSaveImage(std::string const & dirname, quadTreeNode * subroot);
     void _fitInsideImages(spliceRange_t & x, spliceRange_t & y);
     void _generateImageOnDisk(PNG & generatedImage, string const & fname, size_t currX, size_t currY, spliceRange_t x, spliceRange_t y, size_t resX, size_t resY);
+    void _deleteTree(Splice::quadTreeNode *& subroot);
 
     size_t width;
     size_t height;
@@ -122,6 +125,9 @@ private:
     size_t imgSaveOffsetY;
     size_t offsetsX;
     size_t offsetsY;
+
+    std::string file;
+    bool disk;
 
 };
 

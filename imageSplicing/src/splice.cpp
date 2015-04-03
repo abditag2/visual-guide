@@ -17,6 +17,7 @@ Splice::Splice()
     baseY = 0;
     width = 0;
     height = 0;
+    disk = 0;
 }
 
 Splice::Splice(PNG const & image)
@@ -24,8 +25,15 @@ Splice::Splice(PNG const & image)
     width = image.width();
     height = image.height();
     _determineBaseCase();
+    disk = 0;
     std::cout << "Base x: " << baseX << " Base y: " << baseY << std::endl;
     root = _buildTreeHelper(image, 0, 0, width, height);
+}
+
+Splice::Splice(std::string const & filename)
+{
+    file = string(filename);
+    disk = 1;
 }
 
 void Splice::_determineBaseCase()
@@ -60,6 +68,9 @@ void Splice::saveToDisk(std::string const & dirname)
                 baseY << std::endl << 
                 imgSaveOffsetX << std::endl << 
                 imgSaveOffsetY << std::endl;
+
+    _deleteTree(root);
+    file = dirname;
 }
 
 void Splice::saveToDisk(char const * dirname)
@@ -196,6 +207,10 @@ void Splice::_generateImageOnDisk(PNG & generatedImage, string const & fname, si
 
 splicedImage_t Splice::getImage(spliceRange_t x, spliceRange_t y)
 {
+    if (disk == 1)
+    {
+        return getImage(file, x, y);
+    }
     _fitInsideImages(x, y);
 
     splicedImage_t splicedImg;
@@ -247,4 +262,27 @@ void Splice::_fitInsideImages(spliceRange_t & x, spliceRange_t & y)
 
     imgSaveOffsetX = x.begin/baseX;
     imgSaveOffsetY = y.begin/baseY;
+}
+
+Splice::~Splice()
+{
+    _deleteTree(root);
+}
+
+void Splice::_deleteTree(Splice::quadTreeNode *& subroot)
+{
+    if (subroot != NULL)
+    {
+        if (isLeaf(subroot))
+        {
+            delete subroot;
+            subroot = NULL;
+            return;
+        }
+        _deleteTree(subroot->neChild);
+        _deleteTree(subroot->nwChild);
+        _deleteTree(subroot->swChild);
+        _deleteTree(subroot->seChild);
+        return;
+    }
 }

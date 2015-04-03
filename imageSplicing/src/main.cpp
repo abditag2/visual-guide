@@ -19,6 +19,11 @@ int main()
     imgout = test.getImage(string("Super"), x, y).image;
     imgout.writeToFile("test3.png");
 
+    Splice test2("Super");
+    imgout = test.getImage(string("Super"), x, y).image;
+    imgout.writeToFile("test4.png");
+
+
     return 0;
 
 }
