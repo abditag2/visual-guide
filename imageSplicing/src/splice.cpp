@@ -36,6 +36,37 @@ Splice::Splice(std::string const & filename)
     disk = 1;
 }
 
+Splice & Splice::operator=(Splice const & other)
+{
+    width = other.width;
+    height = other.height;
+    baseX = other.baseX;
+    baseY = other.baseY;
+    imgSaveOffsetX = other.imgSaveOffsetX;
+    imgSaveOffsetY = other.imgSaveOffsetY;
+    disk = other.disk;
+    root = _copyTreeRecursive(other.root);
+}
+
+Splice::quadTreeNode * Splice::_copyTreeRecursive(Splice::quadTreeNode const * subroot)
+{
+    if (subroot != NULL)
+    {
+        quadTreeNode * newSubroot = new quadTreeNode(*subroot);
+
+        if (isLeaf(subroot))
+        {
+            return newSubroot;
+        }
+        
+        newSubroot->nwChild = _copyTreeRecursive(subroot->nwChild);
+        newSubroot->neChild = _copyTreeRecursive(subroot->neChild);
+        newSubroot->swChild = _copyTreeRecursive(subroot->swChild);
+        newSubroot->seChild = _copyTreeRecursive(subroot->seChild);
+        return subroot;
+    }
+}
+
 void Splice::_determineBaseCase()
 {
 
@@ -71,6 +102,7 @@ void Splice::saveToDisk(std::string const & dirname)
 
     _deleteTree(root);
     file = dirname;
+    disk = 1;
 }
 
 void Splice::saveToDisk(char const * dirname)

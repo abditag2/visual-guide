@@ -60,12 +60,34 @@ class Splice {
 
 public:
 
+    /*
+     *   Constructors and destructors
+     *   Valid Inputs: PNG image, a filename that is a .splice and a default constructor
+     */
+
     Splice();
     Splice(PNG const & image);
     Splice(std::string const & filename);
     ~Splice();
+    Splice & operator=(Splice const & other);
+
+    /* Saves the current spliced image onto the disk.  By saving it, it is no longer stored in RAM, instead
+     * It is all stored on the HDD and then the filename that it saved as is stored inside the class
+     * All operations from that point on are handled on the disk
+    */
+
     void saveToDisk(std::string const & dirname);
     void saveToDisk(char const * dirname);
+
+    /* 
+     *  Gets an image inside a range, returns a struct that holds the image, xres, yres
+     *
+     *  @returns     splicedImage_t 
+     *                  \_ size_t xres
+     *                  \_ size_t yres
+     *                  \_ PNG image
+     */
+
     splicedImage_t getImage(char const * fname, spliceRange_t x, spliceRange_t y);
     splicedImage_t getImage(std::string const & fname, spliceRange_t x, spliceRange_t y);
     splicedImage_t getImage(spliceRange_t x, spliceRange_t y);
@@ -114,6 +136,7 @@ private:
     void _fitInsideImages(spliceRange_t & x, spliceRange_t & y);
     void _generateImageOnDisk(PNG & generatedImage, string const & fname, size_t currX, size_t currY, spliceRange_t x, spliceRange_t y, size_t resX, size_t resY);
     void _deleteTree(Splice::quadTreeNode *& subroot);
+    Splice::quadTreeNode * _copyTreeRecursive(Splice::quadTreeNode const * subroot);
 
     size_t width;
     size_t height;
