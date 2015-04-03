@@ -36,7 +36,24 @@ Splice::Splice(std::string const & filename)
     disk = 1;
 }
 
+Splice::Splice(Splice const & other)
+{
+    _copy(other);
+}
+
 Splice & Splice::operator=(Splice const & other)
+{
+    if (this != &other)
+    {
+        _deleteTree(root);
+        _copy(other);
+    }
+
+    return *this;
+    
+}
+
+void Splice::_copy(Splice const & other)
 {
     width = other.width;
     height = other.height;
@@ -58,13 +75,14 @@ Splice::quadTreeNode * Splice::_copyTreeRecursive(Splice::quadTreeNode const * s
         {
             return newSubroot;
         }
-        
+
         newSubroot->nwChild = _copyTreeRecursive(subroot->nwChild);
         newSubroot->neChild = _copyTreeRecursive(subroot->neChild);
         newSubroot->swChild = _copyTreeRecursive(subroot->swChild);
         newSubroot->seChild = _copyTreeRecursive(subroot->seChild);
-        return subroot;
+        return newSubroot;
     }
+    return NULL;
 }
 
 void Splice::_determineBaseCase()

@@ -17,11 +17,16 @@ int main()
     PNG imgout;
 
     imgout = test.getImage(string("Super"), x, y).image;
-    imgout.writeToFile("test3.png");
+    imgout.writeToFile("test1.png");
 
     Splice test2("Super");
     imgout = test.getImage(string("Super"), x, y).image;
-    imgout.writeToFile("test4.png");
+    imgout.writeToFile("test2.png");
+
+    Splice test3(test2);
+    imgout = test.getImage(string("Super"), x, y).image;
+    imgout.writeToFile("test3.png");
+
 
 
     return 0;
