@@ -1,12 +1,9 @@
 /*
  *   @author  Jeffrey Huang
- *            04/03/2015
- *   @class   Splice
+ *   @date    04/03/2015
+ *   @file    splice.h
  *   
- *   @implementation  Stores a image inside a large image inside a quadtree structure and
- *                    allows you to store it inside a folder hierarchy on disk and grabs a
- *                    subset of the whole image
- *
+ *   Definition of the Splice Image Class
  *
 */
 

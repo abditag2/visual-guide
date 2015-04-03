@@ -1,3 +1,14 @@
+/*
+ *   @author  Jeffrey Huang
+ *   @date    04/03/2015
+ *   @file    splice.cpp
+ *   
+ *   @implementation  Stores a image inside a large image inside a quadtree structure and
+ *                    allows you to store it inside a folder hierarchy on disk and grabs a
+ *                    subset of the whole image for PURE research
+ *
+*/
+
 #include "splice.h"
 
 Splice::Splice()
