@@ -114,7 +114,7 @@ Splice::quadTreeNode * Splice::_buildTreeHelper(PNG const & image, int x, int y,
     return newSubroot;
 }
 
-PNG Splice::getImage(char const * fname, spliceRange_t x, spliceRange_t y)
+splicedImage_t Splice::getImage(char const * fname, spliceRange_t x, spliceRange_t y)
 {
     if (fname == NULL)
     {
@@ -123,7 +123,7 @@ PNG Splice::getImage(char const * fname, spliceRange_t x, spliceRange_t y)
     return getImage(std::string(fname), x, y);
 }
 
-PNG Splice::getImage(std::string const & fname, spliceRange_t x, spliceRange_t y)
+splicedImage_t Splice::getImage(std::string const & fname, spliceRange_t x, spliceRange_t y)
 {
 
     std::ifstream metadata;
@@ -133,7 +133,8 @@ PNG Splice::getImage(std::string const & fname, spliceRange_t x, spliceRange_t y
     if (!metadata.is_open())
     {
         error("Error File does not exist");
-        return PNG();
+        splicedImage_t newPNG;
+        return newPNG;
     }
 
     while (getline(metadata, line))
@@ -154,12 +155,14 @@ PNG Splice::getImage(std::string const & fname, spliceRange_t x, spliceRange_t y
 
     _fitInsideImages(x, y);
 
-    PNG generatedImage;
-    generatedImage.resize((int) x.end - x.begin, (int) y.end - y.begin);
+    splicedImage_t splicedImg;
+    splicedImg.image.resize((int) x.end - x.begin, (int) y.end - y.begin);
+    splicedImg.xres = (int) x.end - x.begin;
+    splicedImg.yres = (int) y.end - y.begin;
 
-    _generateImageOnDisk(generatedImage, string(fname).append(".splice"), 0, 0, x, y, width, height);
+    _generateImageOnDisk(splicedImg.image, string(fname).append(".splice"), 0, 0, x, y, width, height);
 
-    return generatedImage;
+    return splicedImg;
 }
 
 void Splice::_generateImageOnDisk(PNG & generatedImage, string const & fname, size_t currX, size_t currY, spliceRange_t x, spliceRange_t y, size_t resX, size_t resY)
@@ -191,16 +194,18 @@ void Splice::_generateImageOnDisk(PNG & generatedImage, string const & fname, si
 
 }
 
-PNG Splice::getImage(spliceRange_t x, spliceRange_t y)
+splicedImage_t Splice::getImage(spliceRange_t x, spliceRange_t y)
 {
     _fitInsideImages(x, y);
 
-    PNG generatedImage;
-    generatedImage.resize((int) x.end - x.begin, (int) y.end - y.begin);
+    splicedImage_t splicedImg;
+    splicedImg.image.resize((int) x.end - x.begin, (int) y.end - y.begin);
+    splicedImg.xres = (int) x.end - x.begin;
+    splicedImg.yres = (int) y.end - y.begin;
 
-    _generateImage(generatedImage, root, 0, 0, x, y, width, height);
+    _generateImage(splicedImg.image, root, 0, 0, x, y, width, height);
 
-    return generatedImage;
+    return splicedImg;
 }
 
 void Splice::_generateImage(PNG & img, quadTreeNode * subroot, size_t currX, size_t currY, spliceRange_t & x, spliceRange_t & y, size_t resX, size_t resY)
