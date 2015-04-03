@@ -10,14 +10,14 @@ int main()
     Splice test(inImg);
     test.saveToDisk("Super");
     spliceRange_t x, y;
-    x.begin = 300;
-    x.end = 600;
-    y.begin = 300;
-    y.end = 600;
-    PNG imgout = test.getImage(x, y);
-    imgout.writeToFile("test2.png");
+    x.begin = 12;
+    x.end = 800;
+    y.begin = 2;
+    y.end = 989;
+    PNG imgout;
 
-    test.getImage(string("random"), x, y);
+    imgout = test.getImage(string("Super"), x, y);
+    imgout.writeToFile("test3.png");
 
     return 0;
 

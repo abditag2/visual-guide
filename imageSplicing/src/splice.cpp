@@ -157,9 +157,38 @@ PNG Splice::getImage(std::string const & fname, spliceRange_t x, spliceRange_t y
     PNG generatedImage;
     generatedImage.resize((int) x.end - x.begin, (int) y.end - y.begin);
 
-    _generateImage(generatedImage, root, 0, 0, x, y, width, height);
+    _generateImageOnDisk(generatedImage, string(fname).append(".splice"), 0, 0, x, y, width, height);
 
     return generatedImage;
+}
+
+void Splice::_generateImageOnDisk(PNG & generatedImage, string const & fname, size_t currX, size_t currY, spliceRange_t x, spliceRange_t y, size_t resX, size_t resY)
+{
+    std::ifstream img;
+    img.open(string(fname).append("/image.png"));
+
+    if (img.is_open())
+    {
+        if (currX >= x.begin && currX < x.end && currY >= y.begin && currY < y.end)
+        {
+            int offsetX, offsetY;
+            PNG data(string(fname).append("/image.png"));
+            offsetX = currX / baseX - imgSaveOffsetX;
+            offsetY = currY /baseY - imgSaveOffsetY;
+
+            for (size_t i = 0; i < baseY; i++)
+                for (size_t j = 0; j < baseX; j++)
+                    *(generatedImage(offsetX * baseX + j, offsetY * baseY + i)) = *(data(j, i));
+        }
+        img.close();
+        return;
+    }
+
+    _generateImageOnDisk(generatedImage, string(fname).append("/NW"), currX, currY, x, y, resX/2, resY/2);
+    _generateImageOnDisk(generatedImage, string(fname).append("/NE"), currX + resX/2, currY, x, y, resX/2, resY/2);
+    _generateImageOnDisk(generatedImage, string(fname).append("/SW"), currX, currY + resY/2, x, y, resX/2, resY/2);
+    _generateImageOnDisk(generatedImage, string(fname).append("/SE"), currX + resX/2, currY + resY/2, x, y, resX/2, resY/2);
+
 }
 
 PNG Splice::getImage(spliceRange_t x, spliceRange_t y)

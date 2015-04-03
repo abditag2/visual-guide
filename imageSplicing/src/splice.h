@@ -110,6 +110,7 @@ private:
     void _generateImage(PNG & img, quadTreeNode * subroot, size_t currX, size_t currY, spliceRange_t & x, spliceRange_t & y, size_t resX, size_t resY);
     void _recursiveSaveImage(std::string const & dirname, quadTreeNode * subroot);
     void _fitInsideImages(spliceRange_t & x, spliceRange_t & y);
+    void _generateImageOnDisk(PNG & generatedImage, string const & fname, size_t currX, size_t currY, spliceRange_t x, spliceRange_t y, size_t resX, size_t resY);
 
     size_t width;
     size_t height;
