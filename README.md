@@ -19,3 +19,8 @@ edgeDetect(filepath, type, threshold, direction)
  
 ##openCV_Image_Search
  - An IntelliJ Project using openCV to find a small image in a larger image given a template.
+
+##Splice class
+- Class that handles splitting up a large image into smaller parts on the harddrive using a quadTree structure.  Saves the image inside a folder with NW/SW/NE/SE folders
+- Allows the user to create a picture by specifying an x and y range.
+- Read .h file for function definitions
