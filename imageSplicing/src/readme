@@ -1,0 +1,44 @@
+/*
+ *   @author  Jeffrey Huang
+ *   @date    04/03/2015
+ *   @file    splice.cpp
+ *   
+ *   @implementation  Stores a image inside a large image inside a quadtree structure and
+ *                    allows you to store it inside a folder hierarchy on disk and grabs a
+ *                    subset of the whole image for PURE research
+ *
+*/
+
+Constructors : 
+    
+    Splice() //No argument constructor
+   
+    Splice(PNG const & image) // Image constructor (from PNG object)
+    
+    Splice(string const & filename) // Physical storage constructor through the filename
+    
+    Splice(Splice const & filename) // Copy constructor
+    
+    Splice(PNG const & image, coordinate_t & start, coordinate_t & end) // Coordinate based constructor will save the coordinates and correlate parts of the image with a specific coordinate
+
+Operators    :
+    
+    operator=(Splice const & other) // Set a splice class equal to another
+
+Saving       :
+    
+    void saveToDisk(char const * dirname) // Takes a C-String as the directory name and saves the splice class to the disk and remove it from memory
+    
+    void saveToDisk(string const & dirname) // Takes a string class as the directory name and saves the splice class to the disk and removes it from memory
+
+Retrieval    :
+    
+    ~~~~ Class stored on disk ~~~~
+   
+     splicedImage_t getImage(char const * fname, spliceRange_t x, spliceRange_t y) // Takes a splice range structand returns a splicedImage struct 
+    
+    splicedImage_t getImage(string const & fname, spliceRange_t x, spliceRange_t y) // Takes a splice range struct and a filename to grab fromto save to and returns a splice image struct
+
+    ~~~~ Class stored in memory ~~~~
+    
+    splicedImage_t getImage(spliceRange_t x, spliceRange_t y) // Return the image requested when class is stored in memory

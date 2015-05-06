@@ -48,6 +48,12 @@ typedef struct
     PNG image;
 } splicedImage_t;
 
+typedef struct
+{
+    float x;
+    float y;
+} coordinate_t;
+
 // spliceRange_t makeSpliceRange(float start, float end)
 // {
 //     spliceRange_t newSplice;
@@ -69,6 +75,7 @@ public:
     Splice(PNG const & image);
     Splice(std::string const & filename);
     Splice(Splice const & other);
+    Splice(PNG const & image, coordinate_t & start, coordinate_t & end);
     ~Splice();
     Splice & operator=(Splice const & other);
 
@@ -101,7 +108,7 @@ private:
 
         quadTreeNode() : nwChild(NULL), neChild(NULL), swChild(NULL), seChild(NULL) { /* */ };
         quadTreeNode(quadTreeNode const & other) : data(other.data), nwChild(other.nwChild), neChild(other.neChild), swChild(other.swChild), seChild(other.seChild) { /* */ };
-        quadTreeNode(PNG const & image, int x, int y, int width, int height) : nwChild(NULL), neChild(NULL), swChild(NULL), seChild(NULL)
+        quadTreeNode(PNG const & image, int x, int y, int width, int height, coordinate_t & start, coordinate_t & end) : nwChild(NULL), neChild(NULL), swChild(NULL), seChild(NULL)
         {
             data.resize(width, height);
             for (int i = 0; i < width; i++)
@@ -114,6 +121,9 @@ private:
             }
 
         }
+
+        coordinate_t _start = start;
+        coordinate_t _end = end;
 
         PNG data;
 

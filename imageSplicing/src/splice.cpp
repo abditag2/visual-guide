@@ -41,6 +41,12 @@ Splice::Splice(Splice const & other)
     _copy(other);
 }
 
+Splice::Splice(PNG const & image, coordinate_t & start, coordinate_t & end)
+{
+    
+}
+
+
 Splice & Splice::operator=(Splice const & other)
 {
     if (this != &other)
@@ -264,6 +270,11 @@ splicedImage_t Splice::getImage(spliceRange_t x, spliceRange_t y)
     _fitInsideImages(x, y);
 
     splicedImage_t splicedImg;
+    splicedImg.xres = 0;
+    splicedImg.yres = 0;
+    
+    if (x.begin < 0 || y.begin < 0) return splicedImg;
+
     splicedImg.image.resize((int) x.end - x.begin, (int) y.end - y.begin);
     splicedImg.xres = (int) x.end - x.begin;
     splicedImg.yres = (int) y.end - y.begin;
@@ -306,9 +317,9 @@ void Splice::_fitInsideImages(spliceRange_t & x, spliceRange_t & y)
     y.begin = (float) divisible * baseY;
 
     divisible = x.end/baseX + 1;
-    x.end = (float) divisible * baseX;
+    x.end = (float) divisible * baseX > width ? width : divisible * baseX;
     divisible = y.end/baseY + 1;
-    y.end = (float) divisible * baseY;
+    y.end = (float) divisible * baseY > height ? height : divisible * baseY;
 
     imgSaveOffsetX = x.begin/baseX;
     imgSaveOffsetY = y.begin/baseY;
