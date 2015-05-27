@@ -29,4 +29,4 @@ edgeDetect(filepath, type, threshold, direction)
  - C++ Implementation of template matching
  - USAGE:
     - cannyEdge.cpp: cannyEdge <ImagePath> <Threshold> <ImageSaveLocation>
-    -scaledMatching.cpp: scaledMatching <templateFile> <fullFile> <imageSaveLocation> <-v verbose flag>
+    - scaledMatching.cpp: scaledMatching <templateFile> <fullFile> <imageSaveLocation> <-v verbose flag>
