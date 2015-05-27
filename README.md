@@ -24,3 +24,9 @@ edgeDetect(filepath, type, threshold, direction)
 - Class that handles splitting up a large image into smaller parts on the harddrive using a quadTree structure.  Saves the image inside a folder with NW/SW/NE/SE folders
 - Allows the user to create a picture by specifying an x and y range.
 - Read .h file for function definitions
+
+##OpenCV_Matching
+ - C++ Implementation of template matching
+ - USAGE:
+    - cannyEdge.cpp: cannyEdge <ImagePath> <Threshold> <ImageSaveLocation>
+    -scaledMatching.cpp: scaledMatching <templateFile> <fullFile> <imageSaveLocation> <-v verbose flag>
